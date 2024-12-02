@@ -1,7 +1,4 @@
 # https://adventofcode.com/2024/day/1
-import urllib.request
-from ast import parse
-
 
 def __main__():
     #data = load_example()
@@ -11,17 +8,36 @@ def __main__():
     left_list = []
     right_list = []
     while parsed_data:
-        left_list.append(int(parsed_data.pop()))
-        right_list.append(int(parsed_data.pop()))
+        left_list.append(int(parsed_data.pop(0)))
+        right_list.append(int(parsed_data.pop(0)))
 
     left_list.sort()
     right_list.sort()
 
-    sum = 0
-    while left_list and right_list:
-        sum += abs(left_list.pop() - right_list.pop())
+    #part 1
+    #sum_diff = 0
+    #while left_list and right_list:
+    #    sum_diff += abs(left_list.pop() - right_list.pop())
 
-    print(sum)
+    #print(sum_diff)
+
+    #part 2
+    right_list_histogram = dict()
+    for right_number in right_list:
+        try:
+            right_list_histogram[right_number] += 1
+        except KeyError:
+            right_list_histogram[right_number] = 1
+
+    sum_similarity = 0
+    for left_number in left_list:
+        try:
+            sum_similarity += left_number * right_list_histogram[left_number]
+        except KeyError:
+            pass
+
+
+    print(sum_similarity)
 
 def parse_input(input):
     return input.split()
