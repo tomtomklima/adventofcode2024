@@ -9,8 +9,14 @@ def __main__():
     parsed_data = parse_input(data)
 
     sum = 0
+    test_pattern_first_find = "mul\((\d{1,3}),(\d{1,3})\)"
+    first_find = re.search(test_pattern_first_find, parsed_data[0])
+    sum += reduce(lambda x, y: int(x) * int(y), first_find.groups())
+
     for line in parsed_data:
-        test_pattern = "mul\((\d{1,3}),(\d{1,3})\)"
+        test_pattern = "(?<=do\(\))(?:.*?)mul\((\d{1,3}),(\d{1,3})\)"
+        # currently will not work - must find ALL `mul()` after `do()` instruction
+        # currently only first one is found
         finds = re.findall(test_pattern, line)
         for find in finds:
             sum += reduce(lambda x, y: int(x) * int(y), find)
@@ -21,7 +27,8 @@ def parse_input(input):
     return input.split("\n")
 
 def load_example():
-    f = open("task03example.txt", "r")
+    #f = open("task03example.txt", "r")
+    f = open("task03example_second_part.txt", "r")
 
     return f.read()
 
