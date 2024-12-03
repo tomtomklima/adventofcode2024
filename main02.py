@@ -9,7 +9,8 @@ def __main__():
 
     safe_count = 0
     for level in parsed_data:
-        if is_level_safe(level):
+        #if is_level_safe(level):
+        if is_level_safe_with_dampening(level):
             safe_count += 1
 
     print(safe_count)
@@ -37,6 +38,19 @@ def is_level_safe(level):
             return False
 
     return True
+
+def is_level_safe_with_dampening(level):
+    result = is_level_safe(level)
+    if result:
+        return True
+
+    for index, item in enumerate(level):
+        level_shorter = level[:]
+        del(level_shorter[index])
+        if is_level_safe(level_shorter):
+            return True
+
+    return False
 
 def parse_input(input):
     return [[int(j) for j in i.split()] for i in input.split("\n")]
