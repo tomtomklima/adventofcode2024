@@ -12,7 +12,56 @@ def __main__():
         for x, character in enumerate(line):
             count += count_valid_eight_directions(parsed_data, x, y)
 
+    #print(count)
+
+    count = 0
+    for y, line in enumerate(parsed_data):
+        for x, character in enumerate(line):
+            count += count_valid_x_directions(parsed_data, x, y)
+
     print(count)
+
+# char A as pivot
+def count_valid_x_directions(parsed_data, x, y):
+    matrices = [
+        [ # Ms left
+            [-1, -1],#M
+            [-1, 1],#M
+            [1, -1],#S
+            [1, 1],#S
+        ],
+        [ # Ms up
+            [-1, -1],#M
+            [1, -1],#M
+            [-1, 1],#S
+            [1, 1],#S
+        ],
+        [ # Ms right
+            [1, -1],#M
+            [1, 1],#M
+            [-1, -1],#S
+            [-1, 1],#S
+        ],
+        [ # Ms down
+            [-1, 1],#M
+            [1, 1],#M
+            [-1, -1],#S
+            [1, -1],#S
+        ],
+    ]
+
+    count = 0
+    for m in matrices:
+        if (
+                    get_char_safely(parsed_data, x, y) == 'A'
+                and get_char_safely(parsed_data, x + m[0][0], y + m[0][1]) == 'M'
+                and get_char_safely(parsed_data, x + m[1][0], y + m[1][1]) == 'M'
+                and get_char_safely(parsed_data, x + m[2][0], y + m[2][1]) == 'S'
+                and get_char_safely(parsed_data, x + m[3][0], y + m[3][1]) == 'S'
+        ):
+            count += 1
+
+    return count
 
 def count_valid_eight_directions(parsed_data, x, y):
     matrices = [
@@ -88,7 +137,8 @@ def load_example():
     return f.read()
 
 def load_example_dots():
-    f = open("task04example_dots.txt", "r")
+    #f = open("task04example_dots.txt", "r")
+    f = open("task04example_dots_part2.txt", "r")
 
     return f.read()
 
